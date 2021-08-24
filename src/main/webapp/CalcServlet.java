@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -19,7 +18,6 @@ import java.util.stream.IntStream;
 public class CalcServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PrintWriter writer = resp.getWriter();
         Map<String, String[]> parameters = new HashMap<>(req.getParameterMap());
         String expression = req.getParameter("expression");
         removeExpression(parameters);
@@ -33,7 +31,6 @@ public class CalcServlet extends HttpServlet {
                 .doubleValue()
                 .intValue();
         req.setAttribute("result", result);
-        writer.print(result);
         req.getRequestDispatcher("mypage.jsp").forward(req, resp);
     }
 
