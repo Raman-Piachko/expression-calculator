@@ -1,7 +1,7 @@
-package webapp;
+package servlets;
 
-import webapp.calculator.Calculator;
-import webapp.calculator.WebCalculatorFactory;
+import calculator.Calculator;
+import calculator.WebCalculatorFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

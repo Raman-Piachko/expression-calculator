@@ -40,7 +40,7 @@ public class CalcServletTest {
         tomcat = new Tomcat();
         tomcat.setPort(port);
 
-        String webappDirLocation = "src/main/java/webapp/";
+        String webappDirLocation = "src/main/webapp/";
         StandardContext ctx = (StandardContext) tomcat.addWebapp(
                 "", new File(webappDirLocation).getAbsolutePath()
         );

@@ -1,4 +1,4 @@
-package webapp.calculator;
+package calculator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

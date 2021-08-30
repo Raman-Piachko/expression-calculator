@@ -1,4 +1,4 @@
-package webapp.calculator;
+package calculator;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
