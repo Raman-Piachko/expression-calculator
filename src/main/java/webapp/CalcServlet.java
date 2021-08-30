@@ -15,8 +15,8 @@ public class CalcServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        WebCalculatorFactory factory = new WebCalculatorFactory(req, resp);
-        Calculator calculator = factory.createCalculator();
+        WebCalculatorFactory factory = new WebCalculatorFactory();
+        Calculator calculator = factory.createCalculator(req, resp);
         calculator.calculate();
     }
 }

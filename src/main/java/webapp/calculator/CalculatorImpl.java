@@ -7,11 +7,17 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static webapp.calculator.CalculatorConstants.EMPTY_SYMBOL;
+import static webapp.calculator.CalculatorConstants.EXPRESSION;
+import static webapp.calculator.CalculatorConstants.JSP_PAGE;
+import static webapp.calculator.CalculatorConstants.RESULT;
+import static webapp.calculator.CalculatorConstants.SPACES;
+import static webapp.calculator.CalculatorConstants.WITHOUT_SQUARE_BRACKETS;
 
 public class CalculatorImpl implements Calculator {
     private HttpServletRequest req;
@@ -25,10 +31,11 @@ public class CalculatorImpl implements Calculator {
     @Override
     public void calculate() throws ServletException, IOException {
         Map<String, String[]> parameters = new HashMap<>(req.getParameterMap());
-        String expression = req.getParameter("expression");
+        String expression = req.getParameter(EXPRESSION);
 
         while (isExpressionWithVariables(parameters, expression)) {
-            expression = getExpressionWithValue(parameters, expression.split(""));
+            List<String> expressionWithValue = getExpressionWithValue(parameters, expression.split(EMPTY_SYMBOL));
+            expression = deleteSpaces(expressionWithValue);
         }
 
         MathParser mathParser = MathParserFactory.create();
@@ -36,12 +43,17 @@ public class CalculatorImpl implements Calculator {
                 .doubleValue()
                 .intValue();
 
-        req.setAttribute("result", result);
-        req.getRequestDispatcher("mypage.jsp").forward(req, resp);
+        req.setAttribute(RESULT, result);
+        req.getRequestDispatcher(JSP_PAGE).forward(req, resp);
     }
 
-    private String getExpressionWithValue(Map<String, String[]> parameters, String[] expression) {
-        List<String> listExpression = new ArrayList<>(Arrays.asList(expression));
+    private String deleteSpaces(List<String> expressionWithValue) {
+        return String.join(EMPTY_SYMBOL, expressionWithValue)
+                .replaceAll(SPACES, EMPTY_SYMBOL);
+    }
+
+    private List<String> getExpressionWithValue(Map<String, String[]> parameters, String[] expression) {
+        List<String> listExpression = Arrays.asList(expression);
 
         for (String item : listExpression) {
             for (Map.Entry<String, String[]> entry : parameters.entrySet()) {
@@ -49,19 +61,18 @@ public class CalculatorImpl implements Calculator {
                 String[] value = entry.getValue();
                 if (key.equalsIgnoreCase(item)) {
                     String clearValue = Arrays.toString(value)
-                            .replaceAll("[\\[\\]]", "");
+                            .replaceAll(WITHOUT_SQUARE_BRACKETS, EMPTY_SYMBOL);
                     int replaceableIndex = listExpression.indexOf(item);
                     listExpression.set(replaceableIndex, clearValue);
                 }
             }
         }
 
-        return String.join("", listExpression)
-                .replaceAll("\\s+", "");
+        return listExpression;
     }
 
     private boolean isExpressionWithVariables(Map<String, String[]> parameters, String expression) {
-        String[] splitExpression = expression.split("");
+        String[] splitExpression = expression.split(EMPTY_SYMBOL);
 
         for (String s : splitExpression) {
             for (Map.Entry<String, String[]> entry : parameters.entrySet()) {
