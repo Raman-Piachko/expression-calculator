@@ -1,6 +1,10 @@
 package calculator;
 
-public class CalculatorConstants {
+public final class CalculatorConstants {
+
+    private CalculatorConstants() {
+    }
+
     public static final String EMPTY_SYMBOL = "";
     public static final String EXPRESSION = "expression";
     public static final String RESULT = "result";
