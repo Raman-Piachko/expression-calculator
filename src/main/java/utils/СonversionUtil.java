@@ -1,9 +1,9 @@
 package utils;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static calculator.CalculatorConstants.EMPTY_SYMBOL;
 import static calculator.CalculatorConstants.SPACES;
@@ -14,10 +14,7 @@ public final class СonversionUtil {
     }
 
     public static Map<String, List<String>> convertMapWithArrayValueToListValue(Map<String, String[]> resourceMap) {
-        Map<String, List<String>> stringListMap = new HashMap<>();
-        resourceMap.entrySet().stream().forEach(stringEntry -> stringListMap.put(stringEntry.getKey(), Arrays.asList(stringEntry.getValue())));
-
-        return stringListMap;
+        return resourceMap.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, stringEntry -> Arrays.asList(stringEntry.getValue()), (a, b) -> b));
     }
 
     public static String deleteSpacesAndConvertListToString(List<String> expression) {

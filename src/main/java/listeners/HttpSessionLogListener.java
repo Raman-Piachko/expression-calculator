@@ -5,18 +5,21 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
+import static listeners.ListenterConstants.SESSION_ID_FINISHED;
+import static listeners.ListenterConstants.SESSION_ID_START;
+
 public class HttpSessionLogListener implements HttpSessionListener {
     @Override
-    public void sessionCreated(HttpSessionEvent se) {
-        HttpSession session = se.getSession();
-        ServletContext ctx = session.getServletContext();
-        ctx.log("Session with id = " + session.getId() + " is started");
+    public void sessionCreated(HttpSessionEvent sessionEvent) {
+        HttpSession session = sessionEvent.getSession();
+        ServletContext servletContext = session.getServletContext();
+        servletContext.log(String.format(SESSION_ID_START, session.getId()));
     }
 
     @Override
-    public void sessionDestroyed(HttpSessionEvent se) {
-        HttpSession session = se.getSession();
-        ServletContext ctx = session.getServletContext();
-        ctx.log("Session with id = " + session.getId() + " is finished");
+    public void sessionDestroyed(HttpSessionEvent sessionEvent) {
+        HttpSession session = sessionEvent.getSession();
+        ServletContext servletContext = session.getServletContext();
+        servletContext.log(String.format(SESSION_ID_FINISHED, session.getId()));
     }
 }

@@ -47,9 +47,7 @@ public class CalculatorImpl implements Calculator {
         while (isExpressionWithVariables(stringListMap, expressionList)) {
             convertExpressionWithValue(stringListMap, expressionList);
         }
-        expression = deleteSpacesAndConvertListToString(expressionList);
-
-        return expression;
+        return deleteSpacesAndConvertListToString(expressionList);
     }
 
     private void convertExpressionWithValue(Map<String, List<String>> parameters, List<String> expression) {
